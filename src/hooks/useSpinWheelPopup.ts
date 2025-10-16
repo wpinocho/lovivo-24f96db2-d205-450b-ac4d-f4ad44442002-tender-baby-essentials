@@ -5,51 +5,61 @@ const INACTIVITY_DELAY = 10000; // 10 seconds
 
 export const useSpinWheelPopup = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [hasShown, setHasShown] = useState(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    console.log('SpinWheel: Initial check - already shown?', stored === 'true');
+    return stored === 'true';
+  });
 
   useEffect(() => {
-    // Check if popup has been shown before
-    const alreadyShown = localStorage.getItem(STORAGE_KEY);
-    
-    console.log('SpinWheel: Checking if already shown:', alreadyShown);
-    
-    if (alreadyShown === 'true') {
-      console.log('SpinWheel: Already shown, not showing again');
+    // Don't set up timer if already shown
+    if (hasShown) {
+      console.log('SpinWheel: Already shown before, not setting up timer');
       return;
     }
 
+    console.log('SpinWheel: Setting up inactivity detection');
     let inactivityTimer: NodeJS.Timeout;
 
-    const resetTimer = () => {
-      console.log('SpinWheel: Resetting timer');
+    const startTimer = () => {
+      console.log('SpinWheel: Starting 10 second timer');
       clearTimeout(inactivityTimer);
       
       inactivityTimer = setTimeout(() => {
-        console.log('SpinWheel: 10 seconds of inactivity, showing popup');
+        console.log('SpinWheel: 10 seconds passed! Showing popup');
         setShowPopup(true);
+        setHasShown(true);
         localStorage.setItem(STORAGE_KEY, 'true');
       }, INACTIVITY_DELAY);
+    };
+
+    const resetTimer = () => {
+      console.log('SpinWheel: User activity detected, resetting timer');
+      startTimer();
     };
 
     // Events that indicate user activity
     const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
 
-    console.log('SpinWheel: Starting initial timer');
-    // Start the timer initially
-    resetTimer();
+    // Start initial timer
+    startTimer();
 
-    // Reset timer on user activity
+    // Add event listeners
     events.forEach(event => {
-      document.addEventListener(event, resetTimer);
+      window.addEventListener(event, resetTimer, { passive: true });
     });
 
+    console.log('SpinWheel: Event listeners attached');
+
+    // Cleanup
     return () => {
       console.log('SpinWheel: Cleaning up');
       clearTimeout(inactivityTimer);
       events.forEach(event => {
-        document.removeEventListener(event, resetTimer);
+        window.removeEventListener(event, resetTimer);
       });
     };
-  }, []); // Empty dependency array - only run once on mount
+  }, [hasShown]); // Re-run if hasShown changes
 
   const closePopup = useCallback(() => {
     console.log('SpinWheel: Closing popup');
