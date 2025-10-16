@@ -6,6 +6,7 @@ import { Gift, X } from 'lucide-react';
 interface SpinWheelProps {
   open: boolean;
   onClose: () => void;
+  onSpin?: () => void;
 }
 
 const prizes = [
@@ -19,7 +20,7 @@ const prizes = [
   { id: 8, text: 'Free Gift', color: 'hsl(200, 82%, 92%)', textColor: 'hsl(200, 70%, 50%)' },
 ];
 
-export const SpinWheel = ({ open, onClose }: SpinWheelProps) => {
+export const SpinWheel = ({ open, onClose, onSpin }: SpinWheelProps) => {
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [prize, setPrize] = useState<string | null>(null);
@@ -28,6 +29,7 @@ export const SpinWheel = ({ open, onClose }: SpinWheelProps) => {
   const spinWheel = () => {
     if (spinning || hasSpun) return;
 
+    console.log('SpinWheel: Starting spin');
     setSpinning(true);
     setPrize(null);
 
@@ -39,14 +41,21 @@ export const SpinWheel = ({ open, onClose }: SpinWheelProps) => {
     setRotation(targetRotation);
 
     setTimeout(() => {
+      console.log('SpinWheel: Spin complete, prize:', prizes[prizeIndex].text);
       setSpinning(false);
       setPrize(prizes[prizeIndex].text);
       setHasSpun(true);
+      
+      // Call the onSpin callback to mark as spun in parent
+      if (onSpin) {
+        onSpin();
+      }
     }, 4000);
   };
 
   const handleClose = () => {
     if (!spinning) {
+      console.log('SpinWheel: Closing dialog');
       onClose();
     }
   };
