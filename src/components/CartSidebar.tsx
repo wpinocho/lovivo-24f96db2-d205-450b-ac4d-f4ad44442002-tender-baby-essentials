@@ -60,11 +60,15 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-full sm:w-96 p-0" aria-describedby="cart-description">
+      <SheetContent 
+        side="right" 
+        className="w-full sm:w-96 p-0 bg-gradient-to-br from-white via-baby-pink/30 to-baby-pink/50" 
+        aria-describedby="cart-description"
+      >
         <div className="flex flex-col h-full">
-          <SheetHeader className="p-6 border-b">
+          <SheetHeader className="p-6 border-b border-baby-pink/20 bg-white/80 backdrop-blur-sm">
             <div className="flex items-center justify-between">
-              <SheetTitle>Shopping Cart</SheetTitle>
+              <SheetTitle className="text-foreground">Shopping Cart</SheetTitle>
             </div>
             <div id="cart-description" className="sr-only">
               Review and modify the products in your shopping cart
@@ -80,7 +84,7 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
                 <p className="text-muted-foreground mb-4">
                   Add some products to start your purchase
                 </p>
-                <Button onClick={onClose} variant="outline">
+                <Button onClick={onClose} variant="outline" className="border-baby-pink/30">
                   Continue Shopping
                 </Button>
               </div>
@@ -90,10 +94,10 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
               {/* Cart Items */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {state.items.map((item) => (
-                  <Card key={item.key}>
+                  <Card key={item.key} className="bg-white/90 backdrop-blur-sm border-baby-pink/20">
                     <CardContent className="p-4">
                       <div className="flex items-start space-x-3">
-                        <div className="w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+                        <div className="w-16 h-16 bg-baby-pink/20 rounded-md overflow-hidden flex-shrink-0">
                           {item.product.images && item.product.images.length > 0 || item.variant?.image ? (
                             <img
                               src={item.variant?.image || item.product.images![0]}
@@ -118,7 +122,7 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
                                 variant="outline"
                                 size="icon"
                                 onClick={() => updateQuantity(item.key, item.quantity - 1)}
-                                className="h-7 w-7"
+                                className="h-7 w-7 border-baby-pink/30"
                               >
                                 <Minus className="h-3 w-3" />
                               </Button>
@@ -129,7 +133,7 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
                                 variant="outline"
                                 size="icon"
                                 onClick={() => updateQuantity(item.key, item.quantity + 1)}
-                                className="h-7 w-7"
+                                className="h-7 w-7 border-baby-pink/30"
                               >
                                 <Plus className="h-3 w-3" />
                               </Button>
@@ -157,7 +161,7 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
               </div>
 
               {/* Order Summary */}
-              <div className="border-t p-6">
+              <div className="border-t border-baby-pink/20 p-6 bg-white/80 backdrop-blur-sm">
                 <div className="space-y-3">
                   <div className="flex justify-between font-semibold text-lg">
                     <span>Total</span>
@@ -166,7 +170,7 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
                 </div>
 
                 <Button 
-                  className="w-full mt-4" 
+                  className="w-full mt-4 bg-primary hover:bg-primary/90" 
                   size="lg" 
                   onClick={handleCreateCheckout} 
                   disabled={isCreatingOrder}
