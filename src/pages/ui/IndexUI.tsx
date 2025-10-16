@@ -1,96 +1,53 @@
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
-import { ProductCard } from '@/components/ProductCard';
-import { CollectionCard } from '@/components/CollectionCard';
-import { FloatingCart } from '@/components/FloatingCart';
-import { NewsletterSection } from '@/components/NewsletterSection';
-import { EcommerceTemplate } from '@/templates/EcommerceTemplate';
-import type { UseIndexLogicReturn } from '@/components/headless/HeadlessIndex';
-
-/**
- * EDITABLE UI - IndexUI
- * 
- * Interfaz completamente editable para la página principal.
- * El agente IA puede modificar colores, textos, layout, etc.
- */
+import { ProductCard } from '@/components/ProductCard'
+import { FloatingCart } from '@/components/FloatingCart'
+import { NewsletterSection } from '@/components/NewsletterSection'
+import { EcommerceTemplate } from '@/templates/EcommerceTemplate'
+import { HeroSection } from '@/components/HeroSection'
+import { NewbornChecklist } from '@/components/NewbornChecklist'
+import { CategoryCards } from '@/components/CategoryCards'
+import { HospitalPacks } from '@/components/HospitalPacks'
+import type { UseIndexLogicReturn } from '@/components/headless/HeadlessIndex'
 
 interface IndexUIProps {
-  logic: UseIndexLogicReturn;
+  logic: UseIndexLogicReturn
 }
 
 export const IndexUI = ({ logic }: IndexUIProps) => {
   const {
-    collections,
     loading,
-    loadingCollections,
-    selectedCollectionId,
     filteredProducts,
-    handleViewCollectionProducts,
-    handleShowAllProducts,
-  } = logic;
+  } = logic
 
   return (
-    <EcommerceTemplate 
-      showCart={true}
-    >
-      {/* Hero Section */}
-      <section className="bg-background py-12 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Discover Our Products
-          </h1>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Find the best products at the best price. Guaranteed quality and fast shipping.
-          </p>
-        </div>
-      </section>
+    <EcommerceTemplate showCart={true}>
+      {/* Hero Section with Hospital Basket */}
+      <HeroSection />
 
-      {/* Collections Section */}
-      {!loadingCollections && collections.length > 0 && (
-        <section className="py-12 bg-muted/30">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-foreground mb-8">
-              Our Collections
-            </h2>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {collections.map((collection) => (
-                <CollectionCard 
-                  key={collection.id} 
-                  collection={collection} 
-                  onViewProducts={handleViewCollectionProducts} 
-                />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Newborn Checklist */}
+      <NewbornChecklist />
 
-      {/* Products Section */}
-      <section className="py-12">
+      {/* Category Cards - Nursing, Diapers, Mom Care */}
+      <CategoryCards />
+
+      {/* Hospital Packs Section */}
+      <HospitalPacks />
+
+      {/* Featured Products Section */}
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-foreground">
-              {selectedCollectionId 
-                ? `Products from ${collections.find(c => c.id === selectedCollectionId)?.name || 'Collection'}` 
-                : 'Featured Products'
-              }
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Featured Essentials
             </h2>
-            {selectedCollectionId && (
-              <Button 
-                variant="outline" 
-                onClick={handleShowAllProducts}
-              >
-                See All Products
-              </Button>
-            )}
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Carefully selected products for your baby and postpartum journey
+            </p>
           </div>
           
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
-                <div key={i} className="bg-muted rounded-lg h-80 animate-pulse"></div>
+                <div key={i} className="card-baby h-80 animate-pulse" />
               ))}
             </div>
           ) : filteredProducts.length > 0 ? (
@@ -102,7 +59,7 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
           ) : (
             <div className="text-center py-12">
               <p className="text-muted-foreground">
-                No products available.
+                No products available at the moment.
               </p>
             </div>
           )}
@@ -114,5 +71,5 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
 
       <FloatingCart />
     </EcommerceTemplate>
-  );
-};
+  )
+}

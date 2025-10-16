@@ -61,6 +61,14 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				baby: {
+					pink: 'hsl(340, 82%, 92%)',
+					blue: 'hsl(200, 82%, 92%)',
+					peach: 'hsl(25, 95%, 90%)',
+					lavender: 'hsl(270, 60%, 92%)',
+					mint: 'hsl(150, 60%, 92%)',
+					cream: 'hsl(40, 60%, 95%)'
 				}
 			},
 			borderRadius: {
@@ -84,11 +92,16 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'gentle-float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'gentle-float': 'gentle-float 3s ease-in-out infinite'
 			}
 		}
 	},
