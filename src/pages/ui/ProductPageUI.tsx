@@ -9,6 +9,7 @@ import { EcommerceTemplate } from "@/templates/EcommerceTemplate"
 import { ShoppingCart, ArrowLeft, Plus, Minus } from "lucide-react"
 import { Link } from "react-router-dom"
 import { ProductReviews } from "@/components/ProductReviews"
+import { useState, useEffect } from "react"
 
 import type { Product, ProductVariant } from "@/lib/supabase"
 
@@ -98,6 +99,18 @@ const mockReviews = [
 ]
 
 export const ProductPageUI = ({ logic }: ProductPageUIProps) => {
+  const [showStickyButton, setShowStickyButton] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show sticky button when scrolled down 300px
+      setShowStickyButton(window.scrollY > 300)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   if (logic.loading) {
     return (
       <EcommerceTemplate>
@@ -296,6 +309,41 @@ export const ProductPageUI = ({ logic }: ProductPageUIProps) => {
             <ProductReviews reviews={mockReviews} />
           </div>
         )}
+      </div>
+
+      {/* Sticky Add to Cart Button */}
+      <div 
+        className={`fixed bottom-0 left-0 right-0 bg-gradient-to-r from-white via-baby-pink to-white border-t border-baby-pink/20 shadow-lg transition-transform duration-300 z-50 ${
+          showStickyButton ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between gap-4 max-w-4xl mx-auto">
+            <div className="flex items-center gap-4">
+              <img
+                src={logic.currentImage || "/placeholder.svg"}
+                alt={logic.product.title}
+                className="w-12 h-12 rounded-lg object-cover"
+              />
+              <div>
+                <h3 className="font-semibold text-sm">{logic.product.title}</h3>
+                <p className="text-lg font-bold text-primary">
+                  {logic.formatMoney(logic.currentPrice)}
+                </p>
+              </div>
+            </div>
+            
+            <Button
+              onClick={logic.handleAddToCart}
+              disabled={!logic.inStock}
+              size="lg"
+              className="bg-primary hover:bg-primary/90 min-w-[200px]"
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              {logic.inStock ? 'Add to cart' : 'Out of stock'}
+            </Button>
+          </div>
+        </div>
       </div>
     </EcommerceTemplate>
   )
