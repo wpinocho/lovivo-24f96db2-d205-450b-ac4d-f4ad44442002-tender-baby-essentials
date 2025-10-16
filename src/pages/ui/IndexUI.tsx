@@ -7,6 +7,7 @@ import { NewbornChecklist } from '@/components/NewbornChecklist'
 import { CategoryCards } from '@/components/CategoryCards'
 import { HospitalPacks } from '@/components/HospitalPacks'
 import { SpinWheel } from '@/components/SpinWheel'
+import { WinPrizesSection } from '@/components/WinPrizesSection'
 import { useSpinWheelPopup } from '@/hooks/useSpinWheelPopup'
 import type { UseIndexLogicReturn } from '@/components/headless/HeadlessIndex'
 
@@ -20,7 +21,7 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
     filteredProducts,
   } = logic
 
-  const { showPopup, closePopup } = useSpinWheelPopup();
+  const { showPopup, closePopup, openPopup, hasSpun } = useSpinWheelPopup();
 
   return (
     <EcommerceTemplate showCart={true}>
@@ -29,6 +30,9 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
 
       {/* Hero Section with Hospital Basket */}
       <HeroSection />
+
+      {/* Win Prizes Section - NEW! */}
+      <WinPrizesSection onOpenWheel={openPopup} hasSpun={hasSpun} />
 
       {/* Newborn Checklist */}
       <NewbornChecklist />
