@@ -6,6 +6,8 @@ import { HeroSection } from '@/components/HeroSection'
 import { NewbornChecklist } from '@/components/NewbornChecklist'
 import { CategoryCards } from '@/components/CategoryCards'
 import { HospitalPacks } from '@/components/HospitalPacks'
+import { SpinWheel } from '@/components/SpinWheel'
+import { useSpinWheelPopup } from '@/hooks/useSpinWheelPopup'
 import type { UseIndexLogicReturn } from '@/components/headless/HeadlessIndex'
 
 interface IndexUIProps {
@@ -18,8 +20,13 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
     filteredProducts,
   } = logic
 
+  const { showPopup, closePopup } = useSpinWheelPopup();
+
   return (
     <EcommerceTemplate showCart={true}>
+      {/* Spin Wheel Popup */}
+      <SpinWheel open={showPopup} onClose={closePopup} />
+
       {/* Hero Section with Hospital Basket */}
       <HeroSection />
 
