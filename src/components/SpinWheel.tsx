@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Gift, X } from 'lucide-react';
@@ -6,7 +6,6 @@ import { Gift, X } from 'lucide-react';
 interface SpinWheelProps {
   open: boolean;
   onClose: () => void;
-  onSpin?: () => void;
 }
 
 const prizes = [
@@ -20,14 +19,13 @@ const prizes = [
   { id: 8, text: 'Free Gift', color: 'hsl(200, 82%, 92%)', textColor: 'hsl(200, 70%, 50%)' },
 ];
 
-export const SpinWheel = ({ open, onClose, onSpin }: SpinWheelProps) => {
+export const SpinWheel = ({ open, onClose }: SpinWheelProps) => {
   const [spinning, setSpinning] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [prize, setPrize] = useState<string | null>(null);
-  const [hasSpun, setHasSpun] = useState(false);
 
   const spinWheel = () => {
-    if (spinning || hasSpun) return;
+    if (spinning) return;
 
     console.log('SpinWheel: Starting spin');
     setSpinning(true);
@@ -44,18 +42,15 @@ export const SpinWheel = ({ open, onClose, onSpin }: SpinWheelProps) => {
       console.log('SpinWheel: Spin complete, prize:', prizes[prizeIndex].text);
       setSpinning(false);
       setPrize(prizes[prizeIndex].text);
-      setHasSpun(true);
-      
-      // Call the onSpin callback to mark as spun in parent
-      if (onSpin) {
-        onSpin();
-      }
     }, 4000);
   };
 
   const handleClose = () => {
     if (!spinning) {
       console.log('SpinWheel: Closing dialog');
+      // Reset state when closing
+      setPrize(null);
+      setRotation(0);
       onClose();
     }
   };
@@ -147,14 +142,14 @@ export const SpinWheel = ({ open, onClose, onSpin }: SpinWheelProps) => {
           {/* Spin Button */}
           <Button
             onClick={spinWheel}
-            disabled={spinning || hasSpun}
+            disabled={spinning}
             size="lg"
             className="w-full text-lg font-semibold"
           >
-            {hasSpun ? 'Prize Claimed!' : spinning ? 'Spinning...' : 'SPIN THE WHEEL'}
+            {spinning ? 'Spinning...' : prize ? 'SPIN AGAIN!' : 'SPIN THE WHEEL'}
           </Button>
 
-          {hasSpun && (
+          {prize && (
             <p className="mt-4 text-sm text-muted-foreground">
               Your discount will be applied at checkout
             </p>

@@ -21,7 +21,7 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
     filteredProducts,
   } = logic
 
-  const { showPopup, closePopup, openPopup, hasSpun, markAsSpun } = useSpinWheelPopup();
+  const { showPopup, closePopup, openPopup } = useSpinWheelPopup();
 
   return (
     <EcommerceTemplate showCart={true}>
@@ -29,14 +29,13 @@ export const IndexUI = ({ logic }: IndexUIProps) => {
       <SpinWheel 
         open={showPopup} 
         onClose={closePopup}
-        onSpin={markAsSpun}
       />
 
       {/* Hero Section with Hospital Basket */}
       <HeroSection />
 
-      {/* Win Prizes Section - NEW! */}
-      <WinPrizesSection onOpenWheel={openPopup} hasSpun={hasSpun} />
+      {/* Win Prizes Section */}
+      <WinPrizesSection onOpenWheel={openPopup} />
 
       {/* Newborn Checklist */}
       <NewbornChecklist />

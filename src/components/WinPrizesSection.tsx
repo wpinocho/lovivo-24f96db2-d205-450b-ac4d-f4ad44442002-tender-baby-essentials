@@ -3,10 +3,9 @@ import { Gift, Sparkles, Trophy } from 'lucide-react';
 
 interface WinPrizesSectionProps {
   onOpenWheel: () => void;
-  hasSpun: boolean;
 }
 
-export const WinPrizesSection = ({ onOpenWheel, hasSpun }: WinPrizesSectionProps) => {
+export const WinPrizesSection = ({ onOpenWheel }: WinPrizesSectionProps) => {
   return (
     <section className="py-16 gradient-baby-soft relative overflow-hidden">
       {/* Decorative elements */}
@@ -50,19 +49,12 @@ export const WinPrizesSection = ({ onOpenWheel, hasSpun }: WinPrizesSectionProps
 
         <Button
           onClick={onOpenWheel}
-          disabled={hasSpun}
           size="lg"
           className="text-xl px-12 py-8 rounded-full shadow-2xl hover:shadow-3xl transition-all transform hover:scale-105"
         >
           <Gift className="mr-3 h-6 w-6" />
-          {hasSpun ? 'Prize Already Claimed!' : 'Spin the Wheel Now!'}
+          Spin the Wheel Now!
         </Button>
-
-        {hasSpun && (
-          <p className="mt-4 text-sm text-muted-foreground">
-            You've already claimed your prize! Check your cart for the discount.
-          </p>
-        )}
 
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
           <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-4 shadow-baby-soft">
@@ -75,7 +67,7 @@ export const WinPrizesSection = ({ onOpenWheel, hasSpun }: WinPrizesSectionProps
           </div>
           <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-4 shadow-baby-soft">
             <div className="text-3xl mb-2">🎉</div>
-            <p className="text-sm font-semibold text-foreground">One Time Only</p>
+            <p className="text-sm font-semibold text-foreground">Try Your Luck</p>
           </div>
         </div>
       </div>
